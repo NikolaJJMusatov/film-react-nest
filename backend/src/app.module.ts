@@ -7,7 +7,8 @@ import { FilmsController } from './films/films.controller';
 import { OrderController } from './order/order.controller';
 import { FilmsService } from './films/films.service';
 import { OrderService } from './order/order.service';
-import { FilmsMongoDbRepository } from './repository/films.repository';
+import { FilmsMongoDbRepository } from './repository/films.mongo.repository';
+import { FilmsPostgresDBRepository } from './repository/films.postgres.repository';
 import { DatabaseModule } from './database/database.module';
 import { filmsProvider } from './films/films.provider';
 
@@ -30,6 +31,7 @@ import { filmsProvider } from './films/films.provider';
     OrderService,
     filmsProvider,
     FilmsMongoDbRepository,
+    FilmsPostgresDBRepository,
   ],
 })
 export class AppModule {}

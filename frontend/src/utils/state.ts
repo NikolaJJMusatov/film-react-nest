@@ -87,7 +87,7 @@ const validateOrder = (state: AppState): AppState => {
         errors.push('Некорректный email');
     }
     //validate phone with regexp
-    if (state.contacts.phone && !/\+7\d{10}/.test(state.contacts.phone)) {
+    if (state.contacts.phone && !/[0-9\+\-\(\)\s]{11,25}/.test(state.contacts.phone)) {
         errors.push('Некорректный телефон');
     }
 
