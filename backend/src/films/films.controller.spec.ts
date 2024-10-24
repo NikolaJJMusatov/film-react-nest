@@ -1,18 +1,39 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { FilmsController } from './films.controller';
+import { FilmsService } from './films.service';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('FilmsController', () => {
-  let controller: FilmsController;
+  let filmsController: FilmsController;
+  let filmsService: FilmsService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const app: TestingModule = await Test.createTestingModule({
       controllers: [FilmsController],
-    }).compile();
+      providers: [FilmsService],
+    })
+      .overrideProvider(FilmsService)
+      .useValue({
+        findAll: jest
+          .fn()
+          .mockResolvedValue([{ id: 'test id1' }, { id: 'test id2' }]),
+        findById: jest.fn().mockResolvedValue({ id: 'test id' }),
+      })
+      .compile();
 
-    controller = module.get<FilmsController>(FilmsController);
+    filmsController = app.get<FilmsController>(FilmsController);
+    filmsService = app.get<FilmsService>(FilmsService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it('.getFilms() should call FilmsService.findAll()', async () => {
+    const films = await filmsController.getFilms();
+    expect(films).toEqual([{ id: 'test id1' }, { id: 'test id2' }]);
+    expect(filmsService.findAll).toHaveBeenCalled();
+  });
+
+  it('.getFilmShedule() should call FilmsService.findById()', async () => {
+    const id = 'test id';
+    const filmSchedule = await filmsController.getFilmShedule(id);
+    expect(filmSchedule).toEqual({ id: 'test id' });
+    expect(filmsService.findById).toHaveBeenCalledWith(id);
   });
 });
