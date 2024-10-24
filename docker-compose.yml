@@ -5,6 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    image: ghcr.io/nikolajjmusatov/film_react_nest/backend:latest
     container_name: backend
     ports:
       - 3000:3000
@@ -20,6 +21,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: ghcr.io/nikolajjmusatov/film_react_nest/frontend:latest
     container_name: frontend
     ports:
       - 3001:80
