@@ -65,7 +65,7 @@
 `npm run dev`
 
 Приложение доступно на http://localhost:5173/ 
-В зависимости от выбранного DATABASE_DRIVER приложение взаимодействует с Mongo или Postgres БД.
+В зависимости от выбранного DATABASE_DRIVER приложение взаимодействует с Mongo или Postgres БД
 
 
 
