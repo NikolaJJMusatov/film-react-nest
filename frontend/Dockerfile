@@ -10,14 +10,8 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:stable-alpine
-
-EXPOSE 8000
-
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 
-
-# CMD ["nginx", "-g", "daemon off;"]

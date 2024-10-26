@@ -35,11 +35,3 @@ jobs:
                 file: ./backend/Dockerfile
                 push: true
                 tags: ghcr.io/nikolajjmusatov/backend:latest
-
-            - name: Nginx image
-              uses: docker/build-push-action@v3
-              with:
-                context: ./nginx
-                file: ./nginx/Dockerfile
-                push: true
-                tags: ghcr.io/nikolajjmusatov/nginx:latest
