@@ -1,0 +1,78 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    #image: ghcr.io/nikolajjmusatov/backend:latest
+    container_name: backend
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    networks:
+      - backend_net_postgres
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    #image: ghcr.io/nikolajjmusatov/frontend:latest
+    container_name: frontend
+    networks:
+      - frontend_net
+    env_file:
+      - frontend/.env
+    restart: unless-stopped
+  
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    networks:
+      - backend_net_postgres
+    env_file:
+      - postgres/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    env_file:
+      - pgadmin/.env
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin/data
+    ports:
+      - 8080:80
+    networks:
+      - backend_net_postgres
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+
+    container_name: nginx
+    ports:
+      - 3050:80
+    networks:
+      - frontend_net
+      - backend_net_postgres
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+
+networks:
+  backend_net_postgres:
+  frontend_net:
+
+volumes:
+  pgdata:
+  pgadmin-data:

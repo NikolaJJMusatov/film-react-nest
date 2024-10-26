@@ -43,3 +43,4 @@ jobs:
                 file: ./nginx/Dockerfile
                 push: true
                 tags: ghcr.io/nikolajjmusatov/nginx:latest
+

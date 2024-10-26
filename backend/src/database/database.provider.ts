@@ -13,7 +13,8 @@ export const databaseProvider = {
       return await mongoose.connect(config.database.url);
     } else if (config.database.driver == 'postgres') {
       const dataSource = new DataSource({
-        type: config.database.driver,
+        url: config.database.url,
+        type: config.database.driver as 'postgres' | 'mongodb',
         host: config.database.host,
         port: Number(config.database.port),
         username: config.database.username,
@@ -22,7 +23,6 @@ export const databaseProvider = {
         entities: [Film, Schedule],
         synchronize: false,
       });
-
       return await dataSource.initialize();
     }
   },
