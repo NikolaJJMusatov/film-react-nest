@@ -21,7 +21,6 @@ services:
     container_name: frontend
     networks:
       - backend_net_postgres
-    restart: unless-stopped
     volumes:
       - frontend_dist:/app/dist
     env_file:
@@ -54,10 +53,9 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: nginx:latest
+    image: nginx
     ports:
       - 80:80
-      - 443:443
     networks:
       - backend_net_postgres
     restart: always
