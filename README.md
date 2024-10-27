@@ -1,5 +1,4 @@
 # FILM!
-## [Ссылка на проект](http://6films.nomorepartiesco.ru/)
 
 ## [Ссылка на проект](http://6films.nomorepartiesco.ru/)
 
@@ -22,6 +21,7 @@
 ## Запуск в Docker (DB Postgresql)
 
 В директориях:
+
 `FILM-REACT-NEST/backend/`
 Создайте `.env` файл из примера `.env.example`
 
