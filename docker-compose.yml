@@ -9,6 +9,7 @@ services:
       - postgres
     networks:
       - backend_net_postgres
+      - backend_net_mongo
     env_file:
       - backend/.env
     restart: unless-stopped
@@ -21,6 +22,7 @@ services:
     container_name: frontend
     networks:
       - backend_net_postgres
+      - backend_net_mongo
     volumes:
       - frontend_dist:/app/dist
     env_file:
@@ -34,6 +36,7 @@ services:
     env_file:
       - postgres/.env
     volumes:
+      #- ./_volume/postgres/postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
 
@@ -52,12 +55,40 @@ services:
       - postgres
     restart: unless-stopped
 
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    networks:
+      - backend_net_mongo
+    env_file:
+      - mongodb/.env
+    volumes:
+      - ./_volume/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - db:/data/db
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    env_file:
+      - mongo-express/.env
+    volumes:
+      - mongo-express-data:/var/lib/mongo-express/data
+    networks:
+      - backend_net_mongo
+    restart: unless-stopped
+
   nginx:
     image: nginx
     ports:
       - 80:80
     networks:
       - backend_net_postgres
+      - backend_net_mongo
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
@@ -65,8 +96,11 @@ services:
 
 networks:
   backend_net_postgres:
+  backend_net_mongo:
 
 volumes:
   pgdata:
   pgadmin-data:
   frontend_dist:
+  db:
+  mongo-express-data:

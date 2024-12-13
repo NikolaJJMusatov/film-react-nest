@@ -24,6 +24,7 @@ export class FilmsPostgresDBRepository {
     const film = await this.filmRepository.findOne({
       where: { id },
       relations: { schedule: true },
+      order: { schedule: { daytime: "ASC"  } }, 
     });
     let total = 0;
     if (!film) {
